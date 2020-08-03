@@ -1,17 +1,19 @@
-﻿using System;
-using ClassLibraryApp2;
+﻿using ClassLibraryApp2;
 using Hangfire;
+using Hangfire.Logging;
 using Hangfire.MAMQSqlExtension;
 using Hangfire.SqlServer;
+using System;
+using Microsoft.Extensions.Hosting;
 
 namespace ConsoleApp2
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             GlobalConfiguration.Configuration
-                .UseMAMQSqlServerStorage(@"Server=.\SQLEXPRESS;Database=hangfire_test;Trusted_Connection=True;", new SqlServerStorageOptions
+                .UseMAMQSqlServerStorage(@"Server=.\SQLEXPRESS01;Database=hangfire_test;Trusted_Connection=True;", new SqlServerStorageOptions
                 {
                     UsePageLocksOnDequeue = true,
                     DisableGlobalLocks = true,
