@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "DashboardApp01": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "hangfire",
+      "remoteDebugEnabled": false,
+      "remoteDebugMachine": "",
+      "applicationUrl": "http://localhost:12345"
+    }
+  }
+}
