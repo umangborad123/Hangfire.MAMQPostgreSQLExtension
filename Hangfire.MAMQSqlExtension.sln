@@ -18,9 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp2", "examples\Con
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibraryApp1", "examples\ClassLibraryApp1\ClassLibraryApp1.csproj", "{4D5616A2-0A1D-46D6-9180-6B99598F752D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp01", "ConsoleApp02\ConsoleApp01.csproj", "{5A56EE2A-8841-4020-9F40-CFBE89B0056E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp02\ConsoleApp1.csproj", "{5A56EE2A-8841-4020-9F40-CFBE89B0056E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DashboardApp01", "DashboardApp01\DashboardApp01.csproj", "{B2715B6E-67A8-4174-A205-3A8C390D81F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DashboardApp", "DashboardApp01\DashboardApp.csproj", "{B2715B6E-67A8-4174-A205-3A8C390D81F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
