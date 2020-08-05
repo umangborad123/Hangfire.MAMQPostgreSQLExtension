@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using Hangfire.PostgreSql;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace DashboardApp01
@@ -18,15 +19,15 @@ namespace DashboardApp01
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
                 .UseResultsInContinuations()
-                .UseSqlServerStorage(@"Server=.\SQLEXPRESS01;Database=hangfire_test;Trusted_Connection=True;", new SqlServerStorageOptions
+                .UsePostgreSqlStorage(@"Host=localhost;Database=hangfire_test;Username=postgres;Password=innroad;Pooling=true;MinPoolSize=50;MaxPoolSize=1024;Connection Idle Lifetime=180;Timeout=30;", new PostgreSqlStorageOptions()
                 {
-                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                    QueuePollInterval = TimeSpan.Zero,
-                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(1),
-                    UseRecommendedIsolationLevel = true,
-                    UsePageLocksOnDequeue = true,
-                    DisableGlobalLocks = true,
-                    EnableHeavyMigrations = true
+                    // CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    // QueuePollInterval = TimeSpan.Zero,
+                    // SlidingInvisibilityTimeout = TimeSpan.FromMinutes(1),
+                    // UseRecommendedIsolationLevel = true,
+                    // UsePageLocksOnDequeue = true,
+                    // DisableGlobalLocks = true,
+                    // EnableHeavyMigrations = true
                 });
 
             CreateHostBuilder(args)

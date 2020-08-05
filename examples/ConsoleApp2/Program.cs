@@ -1,10 +1,9 @@
 ﻿using ClassLibraryApp2;
 using Hangfire;
-using Hangfire.Logging;
 using Hangfire.MAMQSqlExtension;
 using Hangfire.SqlServer;
 using System;
-using Microsoft.Extensions.Hosting;
+using Hangfire.PostgreSql;
 
 namespace ConsoleApp2
 {
@@ -13,10 +12,10 @@ namespace ConsoleApp2
         private static void Main(string[] args)
         {
             GlobalConfiguration.Configuration
-                .UseMAMQSqlServerStorage(@"Server=.\SQLEXPRESS01;Database=hangfire_test;Trusted_Connection=True;", new SqlServerStorageOptions
+                .UseMAMQPostgreSQLStorage(@"Host=localhost;Database=hangfire_test;Username=postgres;Password=innroad;Pooling=true;MinPoolSize=50;MaxPoolSize=1024;Connection Idle Lifetime=180;Timeout=30;", new PostgreSqlStorageOptions
                 {
-                    UsePageLocksOnDequeue = true,
-                    DisableGlobalLocks = true,
+                    // UsePageLocksOnDequeue = true,
+                    // DisableGlobalLocks = true,
                 }, new[] { "app2_queue" })
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()

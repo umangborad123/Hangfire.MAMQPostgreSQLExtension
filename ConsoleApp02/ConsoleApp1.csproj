@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\examples\ClassLibraryApp1\ClassLibraryApp1.csproj" />
   </ItemGroup>
 
