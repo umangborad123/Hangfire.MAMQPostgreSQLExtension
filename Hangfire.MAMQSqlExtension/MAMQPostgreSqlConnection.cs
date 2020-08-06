@@ -2,12 +2,12 @@
 using Hangfire.PostgreSql;
 using Hangfire.Server;
 using Hangfire.Storage;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Npgsql;
 
 namespace Hangfire.MAMQSqlExtension
 {
@@ -23,18 +23,37 @@ namespace Hangfire.MAMQSqlExtension
                 .Assembly
                 .GetType(postgresSqlConnectionTypeName);
 
+            Type? pgStorageType = typeof(PostgreSqlStorage);
+
             if (type == null)
             {
                 throw new InvalidOperationException($"{postgresSqlConnectionTypeName} has not been loaded into the process.");
             }
-            var npgsqlConnection = new NpgsqlConnection(nameOrConnectionString);
+
+            //BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+            //FieldInfo field = pgStorageType.GetField("_existingConnection", bindFlags);
+            //var func = pgStorageType.GetMethod("CreateAndOpenConnection", BindingFlags.Instance | BindingFlags.NonPublic);
+            //var npgsqlConnection = func.Invoke(storage, new object[] { });
+
+            //var npgsqlConnection = field.GetValue(storage);
+
             // NpgsqlConnection connection,
             // PersistentJobQueueProviderCollection queueProviders,
             //PostgreSqlStorageOptions options)
 
+            var npgsqlConnection = new NpgsqlConnection(nameOrConnectionString);
+            
+            npgsqlConnection.Open();
             var connection = type.Assembly.CreateInstance(type.FullName, false, BindingFlags.Instance | BindingFlags.Public, null, new object[] { npgsqlConnection, storage.QueueProviders, options }, null, null) as JobStorageConnection;
             _postgreSqlConnection = connection ?? throw new InvalidOperationException($"Could not create an instance for {postgresSqlConnectionTypeName}");
+
             _queues = queues;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _postgreSqlConnection.Dispose();
         }
 
         public override IWriteOnlyTransaction CreateWriteTransaction()
@@ -109,7 +128,7 @@ namespace Hangfire.MAMQSqlExtension
 
             var id = _postgreSqlConnection.GetFirstByLowestScoreFromSet(key, fromScore, toScore);
 
-            if (_queues == null)
+            if (_queues == null || id == null)
                 return id;
 
             var recurringJobId = key switch

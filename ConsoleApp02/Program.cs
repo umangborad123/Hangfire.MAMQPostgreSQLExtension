@@ -12,12 +12,13 @@ namespace ConsoleApp02
         {
             GlobalConfiguration.Configuration
                 .UseColouredConsoleLogProvider()
-                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
                 .UseResultsInContinuations()
-                .UseMAMQPostgreSQLStorage(@"Host=localhost;Database=hangfire_test;Username=postgres;Password=innroad;Pooling=true;MinPoolSize=50;MaxPoolSize=1024;Connection Idle Lifetime=180;Timeout=30;", new PostgreSqlStorageOptions
+                .UseMAMQPostgreSQLStorage(@"Host=localhost;Database=hangfire_test;Username=postgres;Password=innroad", new PostgreSqlStorageOptions
                 {
+                    EnableTransactionScopeEnlistment = true,
+                    PrepareSchemaIfNecessary = true,
                     // UsePageLocksOnDequeue = true,
                     // DisableGlobalLocks = true,
                 }, new[] { "app1_queue" });
