@@ -1,10 +1,8 @@
 ﻿using ClassLibraryApp2;
 using Hangfire;
-using Hangfire.Logging;
 using Hangfire.MAMQSqlExtension;
-using Hangfire.SqlServer;
+using Hangfire.PostgreSql;
 using System;
-using Microsoft.Extensions.Hosting;
 
 namespace ConsoleApp2
 {
@@ -13,26 +11,29 @@ namespace ConsoleApp2
         private static void Main(string[] args)
         {
             GlobalConfiguration.Configuration
-                .UseMAMQSqlServerStorage(@"Server=.\SQLEXPRESS01;Database=hangfire_test;Trusted_Connection=True;", new SqlServerStorageOptions
-                {
-                    UsePageLocksOnDequeue = true,
-                    DisableGlobalLocks = true,
-                }, new[] { "app2_queue" })
-                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseColouredConsoleLogProvider()
                 .UseSimpleAssemblyNameTypeSerializer()
-                .UseRecommendedSerializerSettings();
+                .UseRecommendedSerializerSettings()
+                .UseResultsInContinuations()
+                .UseMAMQPostgreSQLStorage(
+                    @"Host=localhost;Database=hangfire_test;Username=postgres;Password=innroad;Pooling=true",
+                    new PostgreSqlStorageOptions
+                    {
+                        EnableTransactionScopeEnlistment = true,
+                        PrepareSchemaIfNecessary = true
+                        // UsePageLocksOnDequeue = true,
+                        // DisableGlobalLocks = true,
+                    }, new[] { "app2_queue" });
 
             RecurringJob.AddOrUpdate("app2_job", () => App2_Tasks.Do_App2_Task(), Cron.Minutely, TimeZoneInfo.Local, "app2_queue");
 
-            var optoins = new BackgroundJobServerOptions
+            var options = new BackgroundJobServerOptions
             {
                 Queues = new[] { "app2_queue" }
             };
-            using (var server = new BackgroundJobServer(optoins))
-            {
-                Console.WriteLine("Press Enter to exit...");
-                Console.ReadLine();
-            }
+            using var server = new BackgroundJobServer(options);
+            Console.WriteLine("Press Enter to exit...");
+            Console.ReadLine();
         }
     }
 }

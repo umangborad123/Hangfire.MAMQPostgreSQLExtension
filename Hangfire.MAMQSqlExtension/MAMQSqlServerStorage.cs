@@ -1,8 +1,7 @@
-﻿
-namespace Hangfire.MAMQSqlExtension
+﻿namespace Hangfire.MAMQSqlExtension
 {
-    using Hangfire.Storage;
     using Hangfire.SqlServer;
+    using Hangfire.Storage;
     using System.Collections.Generic;
 
     public class MAMQSqlServerStorage : SqlServerStorage

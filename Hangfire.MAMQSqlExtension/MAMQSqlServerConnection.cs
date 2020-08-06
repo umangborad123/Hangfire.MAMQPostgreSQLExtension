@@ -1,17 +1,15 @@
-﻿
-
-namespace Hangfire.MAMQSqlExtension
+﻿namespace Hangfire.MAMQSqlExtension
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading;
     using Hangfire.Annotations;
     using Hangfire.Common;
     using Hangfire.Server;
     using Hangfire.SqlServer;
     using Hangfire.Storage;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading;
 
     internal class MAMQSqlServerConnection : JobStorageConnection
     {

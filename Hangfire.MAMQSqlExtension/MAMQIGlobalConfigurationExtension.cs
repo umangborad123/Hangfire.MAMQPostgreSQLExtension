@@ -1,5 +1,5 @@
-﻿
-
+﻿using Hangfire.PostgreSql;
+using Npgsql;
 
 namespace Hangfire.MAMQSqlExtension
 {
@@ -21,6 +21,21 @@ namespace Hangfire.MAMQSqlExtension
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             var storage = new MAMQSqlServerStorage(nameOrConnectionString, options, queues);
+            return configuration.UseStorage(storage);
+        }
+
+        public static IGlobalConfiguration<MAMQPostgreSqlStorage> UseMAMQPostgreSQLStorage(
+            this IGlobalConfiguration configuration,
+            string nameOrConnectionString,
+            PostgreSqlStorageOptions options,
+            IEnumerable<string> queues)
+        {
+            if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+            if (nameOrConnectionString == null) throw new ArgumentNullException(nameof(nameOrConnectionString));
+            if (options == null) throw new ArgumentNullException(nameof(options));
+
+            var storage = new MAMQPostgreSqlStorage(nameOrConnectionString, options, queues);
+
             return configuration.UseStorage(storage);
         }
     }

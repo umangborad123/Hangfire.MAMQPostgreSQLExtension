@@ -1,7 +1,7 @@
 ﻿using ClassLibraryApp1;
 using Hangfire;
 using Hangfire.MAMQSqlExtension;
-using Hangfire.SqlServer;
+using Hangfire.PostgreSql;
 using System;
 
 namespace ConsoleApp02
@@ -12,14 +12,15 @@ namespace ConsoleApp02
         {
             GlobalConfiguration.Configuration
                 .UseColouredConsoleLogProvider()
-                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
                 .UseResultsInContinuations()
-                .UseMAMQSqlServerStorage(@"Server=.\SQLEXPRESS01;Database=hangfire_test;Trusted_Connection=True;", new SqlServerStorageOptions
+                .UseMAMQPostgreSQLStorage(@"Host=localhost;Database=hangfire_test;Username=postgres;Password=innroad", new PostgreSqlStorageOptions
                 {
-                    UsePageLocksOnDequeue = true,
-                    DisableGlobalLocks = true,
+                    EnableTransactionScopeEnlistment = true,
+                    PrepareSchemaIfNecessary = true,
+                    // UsePageLocksOnDequeue = true,
+                    // DisableGlobalLocks = true,
                 }, new[] { "app1_queue" });
 
             RecurringJob.AddOrUpdate("app1_job", () => App1_Tasks.Do_App1_Task(), Cron.Minutely, TimeZoneInfo.Local, "app1_queue");
